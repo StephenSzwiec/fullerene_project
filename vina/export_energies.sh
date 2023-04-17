@@ -16,11 +16,12 @@
 
 # uncomment this line to write a header to the spreadsheet
 # echo "receptor,ligand,affinity" > energies.csv
-for i in $(ls ./ | grep 'log$')
+for i in $(ls ./ | grep '.log$')
 do
-	first=$(cut -f2 -d'-' <(echo $i) );
-	second=$(cut -f1 -d'.' <(cut -f3 -d'-' <(echo $i )));
-	third=$(cat $i | sed -n '27p' | sed 's/\s\s*/ /g' | cut -d' ' -f3);
-	paste -d',' <(echo $first) <(echo $second) <(echo $third) >> ./energies.csv;
+	first=$(cut -f1 -d'-' <(echo $i) );
+	second=$(cut -f1 -d'.' <(cut -f2 -d'-' <(echo $i )));
+	third=$(cat $i | sed -n '27p' | sed 's/\s\s*/ /g' | cut -d$' ' -f3 -);
+	paste <(echo $first) <(echo $second) <(echo $third) -d',' \
+		>> energies.csv;
 done
 exit 0;
